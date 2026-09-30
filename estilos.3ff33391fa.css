@@ -1,0 +1,202 @@
+:root {
+  --fondo: #f5f7f8;
+  --superficie: #ffffff;
+  --texto: #14202b;
+  --suave: #56636f;
+  --borde: #dde3e8;
+  --acento: #0e6e68;
+  --acento-texto: #ffffff;
+  --acento-suave: #e3f2f0;
+  --peligro: #b42318;
+  --peligro-fondo: #fdecea;
+  --aviso-fondo: #fff6e0;
+  --aviso-texto: #7a4b00;
+  --radio: 12px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --fondo: #0e1418;
+    --superficie: #172026;
+    --texto: #e8eef2;
+    --suave: #9aa8b3;
+    --borde: #2a363f;
+    --acento: #4fc1b6;
+    --acento-texto: #06201d;
+    --acento-suave: #173a37;
+    --peligro: #ff8a7a;
+    --peligro-fondo: #3a1a17;
+    --aviso-fondo: #3a2e12;
+    --aviso-texto: #f3cf7a;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html { font-size: 106.25%; } /* 17px, y escala con el tamaño de letra del sistema */
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.45;
+}
+a { color: var(--acento); }
+main { max-width: 760px; margin: 0 auto; padding: 1rem 1rem 3rem; }
+
+.demo {
+  background: var(--aviso-fondo);
+  color: var(--aviso-texto);
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+.cabecera-app {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  flex-wrap: wrap;
+  max-width: 760px; margin: 0 auto; padding: 1rem 1rem 0;
+}
+.marca { font-weight: 800; font-size: 1.3rem; color: var(--acento); text-decoration: none; }
+.nav { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+.nav a {
+  padding: 0.45rem 0.8rem; border-radius: 999px; text-decoration: none;
+  color: var(--texto); border: 1px solid var(--borde); background: var(--superficie); font-size: 0.95rem;
+}
+.nav a[aria-current='page'] { background: var(--acento); color: var(--acento-texto); border-color: var(--acento); }
+
+h1 { font-size: 1.6rem; margin: 1rem 0 0.25rem; }
+.entradilla { color: var(--suave); margin: 0 0 1.25rem; }
+
+.tarjeta {
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio);
+  padding: 1rem 1.1rem; margin-bottom: 0.9rem;
+}
+.tarjeta h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--suave); margin: 0 0 0.6rem; }
+
+/* ---------- vista del resumen ---------- */
+.paciente { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.paciente .nombre { font-size: 1.45rem; font-weight: 750; margin: 0; }
+.paciente .datos { color: var(--suave); margin: 0.15rem 0 0; }
+.grupo {
+  min-width: 4.2rem; text-align: center; border-radius: var(--radio);
+  background: var(--peligro-fondo); color: var(--peligro); padding: 0.35rem 0.6rem;
+}
+.grupo .valor { font-size: 1.6rem; font-weight: 800; display: block; }
+.grupo .rotulo { font-size: 0.7rem; }
+.destinatario { display: inline-block; margin-top: 0.6rem; font-size: 0.85rem; background: var(--acento-suave); color: var(--acento); padding: 0.15rem 0.6rem; border-radius: 999px; }
+
+.lineas { list-style: none; margin: 0; padding: 0; }
+.linea { padding: 0.55rem 0; border-top: 1px solid var(--borde); }
+.linea:first-child { border-top: 0; padding-top: 0; }
+.linea .texto { font-weight: 650; font-size: 1.05rem; }
+.linea.destacada { border-inline-start: 4px solid var(--peligro); padding-inline-start: 0.7rem; }
+.linea .detalle.grave { color: var(--peligro); font-weight: 700; }
+.linea.destacada .texto { color: var(--peligro); }
+.linea .original { font-size: 0.85rem; color: var(--suave); }
+.linea .detalle { font-size: 0.92rem; color: var(--suave); }
+.marca-es { font-size: 0.7rem; font-weight: 700; border: 1px solid var(--borde); border-radius: 4px; padding: 0 0.3rem; margin-inline-start: 0.4rem; vertical-align: middle; color: var(--suave); }
+.marca-doc { font-size: 0.75rem; color: var(--acento); margin-inline-start: 0.4rem; }
+
+.aviso-pie { font-size: 0.85rem; color: var(--suave); text-align: center; margin-top: 1.2rem; }
+
+.idiomas { display: flex; gap: 0.5rem; justify-content: flex-end; align-items: center; margin: 0.6rem 0; font-weight: 600; }
+.idiomas select {
+  font: inherit; font-size: 1rem; min-height: 44px; padding: 0.3rem 0.6rem; border-radius: 10px;
+  border: 1px solid var(--borde); background: var(--superficie); color: var(--texto);
+}
+
+.estado { text-align: center; padding: 3rem 1rem; color: var(--suave); }
+.error { background: var(--peligro-fondo); color: var(--peligro); border-radius: var(--radio); padding: 1rem; }
+
+form.pin { display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
+form.pin input { font: inherit; font-size: 1.4rem; letter-spacing: 0.3em; width: 8em; text-align: center; padding: 0.4rem; border-radius: 8px; border: 1px solid var(--borde); background: var(--superficie); color: var(--texto); }
+.boton {
+  font: inherit; font-weight: 700; border: 0; border-radius: 8px; padding: 0.55rem 1.1rem; cursor: pointer;
+  background: var(--acento); color: var(--acento-texto); text-decoration: none; display: inline-block;
+}
+.boton.secundario { background: var(--superficie); color: var(--acento); border: 1px solid var(--acento); }
+
+/* ---------- compartir ---------- */
+.selector { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.selector button {
+  font: inherit; padding: 0.45rem 0.8rem; border-radius: 8px; border: 1px solid var(--borde);
+  background: var(--superficie); color: var(--texto); cursor: pointer;
+}
+.selector button[aria-pressed='true'] { background: var(--acento); color: var(--acento-texto); border-color: var(--acento); }
+.casillas { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.35rem 1rem; }
+.casillas label { display: flex; gap: 0.5rem; align-items: center; }
+.fuera { color: var(--suave); font-size: 0.92rem; }
+.fuera li { margin: 0.15rem 0; }
+
+/* ---------- tarjeta QR ---------- */
+.qr-grande { display: flex; justify-content: center; }
+.qr-grande svg { width: min(320px, 80vw); height: auto; background: #fff; padding: 12px; border-radius: 8px; }
+.cartera {
+  width: 85.6mm; height: 54mm; border-radius: 3mm; border: 1px solid #c9d1d7; background: #fff; color: #14202b;
+  display: grid; grid-template-columns: 1fr 46mm; gap: 2mm; padding: 3mm; margin: 0 auto; overflow: hidden;
+}
+.cartera .rotulo-emergencia { background: #b42318; color: #fff; font-weight: 800; font-size: 9pt; padding: 1mm 2mm; border-radius: 1.5mm; display: inline-block; }
+.cartera .nombre { font-weight: 800; font-size: 11pt; margin: 2mm 0 1mm; }
+.cartera .pequeno { font-size: 6.5pt; line-height: 1.25; color: #3b4852; }
+/* El QR lleva el resumen dentro y es denso: a toda la altura, para que los módulos no bajen de ~0,33 mm. */
+.cartera svg { width: 46mm; height: 46mm; align-self: center; }
+.pasos { padding-left: 1.2rem; }
+.pasos li { margin: 0.3rem 0; }
+
+@media print {
+  body { background: #fff; }
+  .no-imprimir, .demo, .cabecera-app { display: none !important; }
+  main { padding: 0; }
+  .tarjeta { border: 0; }
+}
+
+/* ---------- consulta del médico de cabecera (escritorio) ---------- */
+main.ancha { max-width: 1280px; }
+.consulta { display: grid; grid-template-columns: 300px 1fr; gap: 1.25rem; align-items: start; }
+@media (max-width: 800px) { .consulta { grid-template-columns: 1fr; } }
+.cupo { background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); padding: 0.6rem; position: sticky; top: 1rem; }
+.medica { font-size: 0.85rem; color: var(--suave); margin: 0.3rem 0.4rem 0.8rem; }
+.medica strong { color: var(--texto); font-size: 1rem; }
+.paciente-fila {
+  display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; width: 100%; text-align: left;
+  font: inherit; background: none; border: 0; border-radius: 8px; padding: 0.55rem 0.6rem; cursor: pointer; color: var(--texto);
+}
+.paciente-fila small { display: block; color: var(--suave); font-size: 0.78rem; }
+.paciente-fila:hover { background: var(--fondo); }
+.paciente-fila.activa { background: var(--acento-suave); }
+.insignia { background: var(--acento); color: var(--acento-texto); border-radius: 999px; min-width: 1.5rem; text-align: center; font-size: 0.8rem; font-weight: 700; padding: 0.05rem 0.4rem; }
+.insignia.urgente { background: var(--peligro); color: #fff; }
+.panel h1 { margin-top: 0; }
+.aviso { background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); padding: 0.9rem 1rem; margin-bottom: 0.8rem; }
+.aviso.urgente { border-left: 5px solid var(--peligro); }
+.aviso.gestionado { opacity: 0.65; }
+.aviso header { display: flex; gap: 0.8rem; align-items: baseline; flex-wrap: wrap; }
+.aviso header time { margin-left: auto; color: var(--suave); font-size: 0.85rem; }
+.aviso.urgente header strong { color: var(--peligro); }
+.aviso p { margin: 0.35rem 0; }
+.aviso .nota { color: var(--suave); font-style: italic; }
+.tareas { margin: 0.4rem 0; padding-left: 1.2rem; }
+.aviso footer { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+.enlace { font: inherit; background: none; border: 0; color: var(--acento); cursor: pointer; padding: 0; text-decoration: underline; }
+.subtitulo { font-size: 1.1rem; margin: 1.4rem 0 0.6rem; }
+
+/* ---------- avisar a la familia (visor de emergencia) ---------- */
+.familia { border-color: var(--acento); }
+.familia-aviso { font-weight: 700; color: var(--acento); margin-top: 0; }
+.familia label { display: block; font-size: 0.9rem; color: var(--suave); margin-top: 0.6rem; }
+.familia input, .familia textarea {
+  display: block; width: 100%; margin-top: 0.25rem; font: inherit; padding: 0.5rem 0.6rem;
+  border: 1px solid var(--borde); border-radius: 8px; background: var(--fondo); color: var(--texto);
+}
+.familia-botones { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.8rem; }
+
+/* ---------- acceso a la consulta ---------- */
+.acceso { max-width: 460px; margin: 2rem auto; }
+.acceso form { display: flex; flex-direction: column; gap: 0.8rem; }
+.acceso label, .proponer label { display: flex; flex-direction: column; gap: 0.3rem; font-weight: 600; }
+.acceso input, .acceso textarea, .proponer input {
+  font: inherit; font-size: 1rem; min-height: 44px; padding: 0.5rem 0.7rem; border-radius: 10px;
+  border: 1px solid var(--borde); background: var(--superficie); color: var(--texto);
+}
+.acceso code { word-break: break-all; }
+.proponer { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
