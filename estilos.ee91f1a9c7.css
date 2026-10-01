@@ -200,3 +200,4 @@ main.ancha { max-width: 1280px; }
 }
 .acceso code { word-break: break-all; }
 .proponer { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
+.boton.peligro { background: var(--peligro); color: #fff; border-color: var(--peligro); }
