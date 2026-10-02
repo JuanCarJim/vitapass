@@ -201,3 +201,25 @@ main.ancha { max-width: 1280px; }
 .acceso code { word-break: break-all; }
 .proponer { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
 .boton.peligro { background: var(--peligro); color: #fff; border-color: var(--peligro); }
+
+/* ---------- controles de casa (módulo de litiasis) ---------- */
+.litiasis { margin-top: 1rem; }
+.litiasis h3 { font-size: 1rem; margin: 1rem 0 0.4rem; }
+.litiasis-avisos { list-style: none; padding: 0; margin: 0.5rem 0; display: grid; gap: 0.35rem; }
+.litiasis-avisos li { padding: 0.5rem 0.75rem; border-radius: 8px; background: var(--acento-suave); }
+.litiasis-avisos li.atencion { background: var(--aviso-fondo); color: var(--aviso-texto); font-weight: 600; }
+.litiasis-tabla { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+.litiasis-tabla th, .litiasis-tabla td { text-align: left; padding: 0.45rem 0.5rem; border-bottom: 1px solid var(--borde); vertical-align: middle; font-variant-numeric: tabular-nums; }
+.litiasis-tabla tbody td { white-space: nowrap; }
+.litiasis-tabla thead th { color: var(--suave); font-weight: 600; font-size: 0.8rem; }
+.litiasis-tabla th small { display: block; color: var(--suave); font-weight: 400; }
+.litiasis-grafica { width: 180px; height: 40px; display: block; }
+.litiasis-banda { fill: var(--acento-suave); }
+.litiasis-linea { fill: none; stroke: var(--acento); stroke-width: 1.5; }
+.litiasis-punto { fill: var(--acento); }
+.litiasis-adherencia { margin: 0; padding-left: 1.2rem; }
+.litiasis-tendencia { margin-top: 1rem; padding: 0.75rem 1rem; border: 2px dashed var(--borde); border-radius: var(--radio); }
+.litiasis-tendencia h3 { margin-top: 0; }
+@media (max-width: 720px) {
+  .litiasis-tabla { display: block; overflow-x: auto; }
+}
