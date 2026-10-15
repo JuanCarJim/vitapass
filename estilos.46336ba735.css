@@ -1,29 +1,38 @@
+/* Gama de CoachIn (los mismos tokens que apps/movil/fuente/tema.ts). El acento es su verde
+   #1F9A8C oscurecido lo justo para que el texto blanco encima pase AA. */
 :root {
-  --fondo: #f5f7f8;
+  --fondo: #f8faf9;
   --superficie: #ffffff;
-  --texto: #14202b;
-  --suave: #56636f;
-  --borde: #dde3e8;
-  --acento: #0e6e68;
+  --texto: #14201e;
+  --suave: #46524f;
+  --borde: #d9e2df;
+  --acento: #147569; /* 4,8:1 sobre fondo y acento-suave; #188479 se quedaba en 4,3 y 3,96 */
+  --borde-campo: #7d8b88; /* bordes de campos: 3:1 (WCAG 1.4.11) */
   --acento-texto: #ffffff;
-  --acento-suave: #e3f2f0;
+  --acento-suave: #e1f3f0;
+  --hondo: #0f4f48;
+  --lima: #c6e83a;
+  --lima-suave: #f3f9dc;
   --peligro: #b42318;
   --peligro-fondo: #fdecea;
   --aviso-fondo: #fff6e0;
   --aviso-texto: #7a4b00;
-  --radio: 12px;
+  --radio: 14px;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --fondo: #0e1418;
-    --superficie: #172026;
-    --texto: #e8eef2;
-    --suave: #9aa8b3;
-    --borde: #2a363f;
-    --acento: #4fc1b6;
+    --fondo: #0b1513;
+    --superficie: #13211e;
+    --texto: #e8f0ee;
+    --suave: #9fb0ac;
+    --borde: #263632;
+    --borde-campo: #6b7f7a;
+    --acento: #3fc2b2;
     --acento-texto: #06201d;
-    --acento-suave: #173a37;
+    --acento-suave: #123a35;
+    --hondo: #bfe3dd;
+    --lima-suave: #2a3312;
     --peligro: #ff8a7a;
     --peligro-fondo: #3a1a17;
     --aviso-fondo: #3a2e12;
@@ -56,7 +65,7 @@ main { max-width: 760px; margin: 0 auto; padding: 1rem 1rem 3rem; }
   flex-wrap: wrap;
   max-width: 760px; margin: 0 auto; padding: 1rem 1rem 0;
 }
-.marca { font-weight: 800; font-size: 1.3rem; color: var(--acento); text-decoration: none; }
+.marca { font-weight: 800; font-size: 1.3rem; color: var(--hondo); text-decoration: none; letter-spacing: -0.02em; }
 .nav { display: flex; gap: 0.35rem; flex-wrap: wrap; }
 .nav a {
   padding: 0.45rem 0.8rem; border-radius: 999px; text-decoration: none;
@@ -64,14 +73,15 @@ main { max-width: 760px; margin: 0 auto; padding: 1rem 1rem 3rem; }
 }
 .nav a[aria-current='page'] { background: var(--acento); color: var(--acento-texto); border-color: var(--acento); }
 
-h1 { font-size: 1.6rem; margin: 1rem 0 0.25rem; }
+h1 { font-size: 1.6rem; margin: 1rem 0 0.25rem; color: var(--hondo); letter-spacing: -0.02em; }
+h1::after { content: ''; display: block; width: 32px; height: 4px; border-radius: 2px; background: var(--lima); margin-top: 0.45rem; }
 .entradilla { color: var(--suave); margin: 0 0 1.25rem; }
 
 .tarjeta {
   background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio);
   padding: 1rem 1.1rem; margin-bottom: 0.9rem;
 }
-.tarjeta h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--suave); margin: 0 0 0.6rem; }
+.tarjeta h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; color: var(--suave); margin: 0 0 0.6rem; }
 
 /* ---------- vista del resumen ---------- */
 .paciente { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
@@ -102,14 +112,14 @@ h1 { font-size: 1.6rem; margin: 1rem 0 0.25rem; }
 .idiomas { display: flex; gap: 0.5rem; justify-content: flex-end; align-items: center; margin: 0.6rem 0; font-weight: 600; }
 .idiomas select {
   font: inherit; font-size: 1rem; min-height: 44px; padding: 0.3rem 0.6rem; border-radius: 10px;
-  border: 1px solid var(--borde); background: var(--superficie); color: var(--texto);
+  border: 1px solid var(--borde-campo); background: var(--superficie); color: var(--texto);
 }
 
 .estado { text-align: center; padding: 3rem 1rem; color: var(--suave); }
 .error { background: var(--peligro-fondo); color: var(--peligro); border-radius: var(--radio); padding: 1rem; }
 
 form.pin { display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
-form.pin input { font: inherit; font-size: 1.4rem; letter-spacing: 0.3em; width: 8em; text-align: center; padding: 0.4rem; border-radius: 8px; border: 1px solid var(--borde); background: var(--superficie); color: var(--texto); }
+form.pin input { font: inherit; font-size: 1.4rem; min-height: 44px; letter-spacing: 0.3em; width: 8em; text-align: center; padding: 0.4rem; border-radius: 8px; border: 1px solid var(--borde-campo); background: var(--superficie); color: var(--texto); }
 .boton {
   font: inherit; font-weight: 700; border: 0; border-radius: 8px; padding: 0.55rem 1.1rem; cursor: pointer;
   background: var(--acento); color: var(--acento-texto); text-decoration: none; display: inline-block;
@@ -182,11 +192,12 @@ main.ancha { max-width: 1280px; }
 
 /* ---------- avisar a la familia (visor de emergencia) ---------- */
 .familia { border-color: var(--acento); }
-.familia-aviso { font-weight: 700; color: var(--acento); margin-top: 0; }
+/* Corto: en un móvil estrecho no debe empujar la anticoagulación fuera de la primera pantalla. */
+.familia-aviso { font-weight: 600; font-size: 0.9rem; line-height: 1.3; color: var(--acento); margin-top: 0; }
 .familia label { display: block; font-size: 0.9rem; color: var(--suave); margin-top: 0.6rem; }
 .familia input, .familia textarea {
   display: block; width: 100%; margin-top: 0.25rem; font: inherit; padding: 0.5rem 0.6rem;
-  border: 1px solid var(--borde); border-radius: 8px; background: var(--fondo); color: var(--texto);
+  border: 1px solid var(--borde-campo); border-radius: 8px; background: var(--fondo); color: var(--texto);
 }
 .familia-botones { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.8rem; }
 
@@ -196,7 +207,7 @@ main.ancha { max-width: 1280px; }
 .acceso label, .proponer label { display: flex; flex-direction: column; gap: 0.3rem; font-weight: 600; }
 .acceso input, .acceso textarea, .proponer input {
   font: inherit; font-size: 1rem; min-height: 44px; padding: 0.5rem 0.7rem; border-radius: 10px;
-  border: 1px solid var(--borde); background: var(--superficie); color: var(--texto);
+  border: 1px solid var(--borde-campo); background: var(--superficie); color: var(--texto);
 }
 .acceso code { word-break: break-all; }
 .proponer { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
