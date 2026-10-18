@@ -1,0 +1,7 @@
+# VitaPass · Cómo avisarnos de una vulnerabilidad (RFC 9116)
+# Política: docs/seguridad/divulgacion.md. Se publica con el visor (apps/web/visor-estatico/construir.mjs).
+Contact: https://github.com/JuanCarJim/vitapass/security/advisories/new
+Expires: 2027-10-18T00:00:00.000Z
+Preferred-Languages: es, en
+Canonical: https://juancarjim.github.io/vitapass/.well-known/security.txt
+Policy: https://juancarjim.github.io/vitapass/seguridad/

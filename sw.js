@@ -1,6 +1,6 @@
-const CACHE = 'vitapass-visor-c0270f281c';
+const CACHE = 'vitapass-visor-00ed604967';
 const PAGINA = '/vitapass/v/';
-const FICHEROS = [PAGINA, '/vitapass/visor.c0270f281c.js', '/vitapass/estilos.46336ba735.css'];
+const FICHEROS = [PAGINA, '/vitapass/visor.00ed604967.js', '/vitapass/estilos.93286a2bde.css'];
 self.addEventListener('install', (e) => e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FICHEROS)).then(() => self.skipWaiting())));
 self.addEventListener('activate', (e) => e.waitUntil(caches.keys().then((k) => Promise.all(k.filter((x) => x !== CACHE).map((x) => caches.delete(x)))).then(() => self.clients.claim())));
 self.addEventListener('fetch', (e) => {
