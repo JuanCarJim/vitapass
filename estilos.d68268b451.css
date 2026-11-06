@@ -1,0 +1,382 @@
+/* Rediseño 2, propuesta A «Pestañas» (docs/08-rediseno.md §5, elegida por JC el 6-11-2026).
+   Los mismos tokens que apps/movil/fuente/tema.ts: teal, verde y azul. Nunca negro ni amarillo;
+   el rojo SOLO para el SOS y lo de riesgo vital (`--vital`, las líneas `destacado` de la vista).
+   Contraste AA (4,5:1) comprobado en claro y oscuro: texto/fondo 13,1 y 14,6 · suave/superficie 6,6
+   y 7,0 · acento/superficie 5,6 y 7,4 · blanco/cabecera 5,6 y 9,4 · vital/vitalSuave 5,8 y 7,9 ·
+   azul/azulSuave 7,1 y 6,9. */
+:root {
+  --fondo: #eef6f4;
+  --superficie: #ffffff;
+  --superficie-2: #f5faf9;
+  --texto: #0f2e2b;
+  --suave: #46625e;
+  --borde: #d3e5e1;
+  --borde-campo: #6f8f8a; /* bordes de campos: 3:1 (WCAG 1.4.11) */
+  --acento: #147569;
+  --acento-texto: #ffffff;
+  --acento-suave: #ddf1ed;
+  --hondo: #0f4f48;
+  --cabecera: #147569;
+  --cabecera-texto: #ffffff;
+  --cabecera-suave: #d3eee9;
+  --verde: #1e7a46;
+  --verde-suave: #e2f3e8;
+  --azul: #1d4e89;
+  --azul-suave: #e4edf8;
+  --sos: #b42318;
+  --sos-texto: #ffffff;
+  --vital: #b42318;
+  --vital-suave: #fcebe9;
+  --sombra: rgba(15, 46, 43, 0.14);
+  /* Alias de antes: lo que avisaba en rojo o en ámbar pasa al azul. */
+  --peligro: var(--azul);
+  --peligro-fondo: var(--azul-suave);
+  --aviso-fondo: var(--azul-suave);
+  --aviso-texto: #173f6e;
+  --radio: 16px;
+  --radio-s: 10px;
+  --radio-cabecera: 28px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --fondo: #0b2623;
+    --superficie: #123430;
+    --superficie-2: #163c37;
+    --texto: #e4f2ef;
+    --suave: #a3c2bd;
+    --borde: #24504a;
+    --borde-campo: #6b9690;
+    --acento: #5fd0bf;
+    --acento-texto: #062320;
+    --acento-suave: #17443e;
+    --hondo: #bfe3dd;
+    --cabecera: #0f4f48;
+    --cabecera-texto: #ffffff;
+    --cabecera-suave: #cde9e4;
+    --verde: #5bcb8e;
+    --verde-suave: #173326;
+    --azul: #9cc2f2;
+    --azul-suave: #18304d;
+    --vital: #ff9c90;
+    --vital-suave: #3a1a17;
+    --sombra: rgba(0, 0, 0, 0.4);
+    --aviso-texto: #b9d3f5;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html { font-size: 112.5%; } /* 18 px de cuerpo, y escala con el tamaño de letra del sistema */
+@media (min-width: 900px) { html { font-size: 106.25%; } } /* 17 px en el ordenador de la consulta */
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--acento); }
+:focus-visible { outline: 3px solid var(--acento); outline-offset: 2px; border-radius: 6px; }
+.solo-lector {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+main { max-width: 760px; margin: 0 auto; padding: 1rem 1rem 3rem; }
+
+/* ---------- cabecera teal compacta (ATravelGuide: esquinas inferiores de 28) ---------- */
+.cabecera-app {
+  background: var(--cabecera); color: var(--cabecera-texto);
+  border-radius: 0 0 var(--radio-cabecera) var(--radio-cabecera);
+  padding: 0.7rem 1rem 0.85rem;
+}
+.cabecera-app :focus-visible { outline-color: var(--cabecera-texto); }
+.cabecera-dentro { max-width: calc(760px - 2rem); margin: 0 auto; }
+.cabecera-app.ancha .cabecera-dentro { max-width: calc(1280px - 2rem); }
+.cabecera-fila { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.marca { font-weight: 800; font-size: 1rem; color: var(--cabecera-suave); text-decoration: none; letter-spacing: 0.01em; margin-inline-end: auto; }
+.cabecera-app h1 { color: var(--cabecera-texto); font-size: 1.6rem; margin: 0.15rem 0 0; letter-spacing: -0.02em; line-height: 1.2; }
+.cabecera-app h1::after { content: none; }
+.pastilla-demo {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.18); color: var(--cabecera-texto);
+  border-radius: 999px; padding: 0.15rem 0.7rem; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.06em;
+}
+.pastilla-demo span { font-weight: 600; letter-spacing: 0; }
+/* Las secciones, como fichas dentro de la cabecera (blanco translúcido; la activa, blanca). */
+.nav { display: flex; gap: 0.4rem; overflow-x: auto; margin-top: 0.7rem; scrollbar-width: none; padding-bottom: 2px; }
+.nav::-webkit-scrollbar { display: none; }
+.nav a {
+  flex: none; display: inline-flex; align-items: center; min-height: 44px; padding: 0 1rem; border-radius: 999px;
+  text-decoration: none; font-weight: 700; font-size: 0.95rem;
+  color: var(--cabecera-texto); background: rgba(255, 255, 255, 0.16);
+}
+.nav a[aria-current='page'] { background: #ffffff; color: #147569; }
+
+h1 { font-size: 1.6rem; margin: 1rem 0 0.25rem; color: var(--hondo); letter-spacing: -0.02em; }
+.entradilla { color: var(--suave); margin: 0 0 1rem; }
+
+.tarjeta {
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio);
+  padding: 1rem 1.1rem; margin-bottom: 0.8rem;
+}
+.tarjeta h2, .rotulo-seccion {
+  font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; color: var(--suave); margin: 0 0 0.6rem;
+}
+.rotulo-seccion { margin: 1.1rem 0.25rem 0.5rem; }
+
+/* ---------- franja fina de aviso (azul, se cierra con ✕) ---------- */
+.franja {
+  display: flex; align-items: center; gap: 0.6rem; background: var(--azul-suave); color: var(--aviso-texto);
+  border-radius: 12px; padding: 0.2rem 0.3rem 0.2rem 0.8rem; margin-bottom: 0.7rem; font-size: 0.85rem; font-weight: 600; min-height: 44px;
+}
+.franja .icono { flex: none; width: 1.15rem; height: 1.15rem; }
+.franja p { margin: 0; flex: 1; line-height: 1.3; }
+.franja button {
+  flex: none; width: 44px; height: 44px; border: 0; background: none; color: inherit; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 1.1rem;
+}
+.franja button:hover { background: rgba(29, 78, 137, 0.1); }
+
+/* ---------- fichas de sección (una a una) ---------- */
+.fichas { display: flex; gap: 0.4rem; overflow-x: auto; scrollbar-width: none; margin: 0 0 0.8rem; padding: 2px; }
+.fichas::-webkit-scrollbar { display: none; }
+.fichas button {
+  flex: none; font: inherit; font-size: 0.95rem; font-weight: 700; min-height: 44px; padding: 0 1rem; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--borde); background: var(--superficie); color: var(--texto); display: inline-flex; align-items: center; gap: 0.4rem;
+}
+.fichas button[aria-selected='true'] { background: var(--acento); border-color: var(--acento); color: var(--acento-texto); }
+.fichas .cuenta { font-size: 0.8rem; font-weight: 700; opacity: 0.85; }
+.segmentos { display: flex; gap: 4px; background: var(--acento-suave); border-radius: 14px; padding: 4px; margin: 0 0 0.8rem; }
+.segmentos button {
+  flex: 1; font: inherit; font-weight: 700; font-size: 0.95rem; min-height: 44px; border: 0; border-radius: 10px; cursor: pointer;
+  background: none; color: var(--acento); padding: 0 0.5rem;
+}
+.segmentos button[aria-selected='true'] { background: var(--superficie); color: var(--acento); box-shadow: 0 1px 3px var(--sombra); }
+/* En oscuro, la superficie casi no se distingue del carril: el elegido va relleno de teal. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .segmentos button[aria-selected='true'] { background: var(--acento); color: var(--acento-texto); }
+}
+@media (min-width: 900px) {
+  /* Con sitio, todas las fichas a la vista (en el móvil se deslizan). */
+  .fichas { flex-wrap: wrap; overflow: visible; }
+  .partes-anchas > .segmentos { display: none; }
+  .partes-anchas > .partes-panel { display: block !important; }
+  .partes-anchas { display: grid; grid-template-columns: minmax(320px, 400px) 1fr; gap: 1.25rem; align-items: start; }
+}
+
+/* ---------- vista del resumen ---------- */
+.paciente { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.paciente .nombre { font-size: 1.35rem; font-weight: 800; margin: 0; line-height: 1.2; }
+.paciente .datos { color: var(--suave); margin: 0.15rem 0 0; font-size: 0.92rem; }
+.paciente .codigo { font-size: 0.85rem; letter-spacing: 0.04em; }
+/* El grupo sanguíneo no es rojo: el rojo es solo del SOS y de lo de riesgo vital. */
+.grupo {
+  min-width: 4.2rem; text-align: center; border-radius: 14px;
+  background: var(--acento-suave); color: var(--hondo); padding: 0.35rem 0.6rem;
+}
+.grupo .valor { font-size: 1.55rem; font-weight: 800; display: block; line-height: 1.15; }
+.grupo .rotulo { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+.destinatario { display: inline-block; margin-top: 0.6rem; font-size: 0.8rem; font-weight: 600; background: var(--acento-suave); color: var(--acento); padding: 0.15rem 0.7rem; border-radius: 999px; }
+
+.bloque { padding: 0; overflow: hidden; }
+.bloque h2 { padding: 0.85rem 1.1rem 0; }
+.lineas { list-style: none; margin: 0; padding: 0; }
+.linea { padding: 0.65rem 1.1rem; border-top: 1px solid var(--borde); }
+.bloque h2 + .lineas .linea:first-child { border-top: 0; padding-top: 0.2rem; }
+.linea .texto { font-weight: 650; font-size: 1.02rem; }
+/* Riesgo vital: rojo, con su fondo y la barra al lado de inicio (a la derecha en árabe). */
+.linea.destacada { background: var(--vital-suave); border-inline-start: 4px solid var(--vital); padding-inline-start: calc(1.1rem - 4px); }
+.bloque h2 + .lineas .linea.destacada:first-child { padding-top: 0.65rem; }
+.linea.destacada .texto, .linea .detalle.grave { color: var(--vital); }
+/* Lo destacado que no es riesgo vital (vacuna caducada, analítica, voluntades, implantes): azul. */
+.linea.destacada.aviso { background: var(--azul-suave); border-inline-start-color: var(--azul); }
+.linea.destacada.aviso .texto, .linea.destacada.aviso .detalle.grave { color: var(--azul); }
+.linea .detalle.grave { font-weight: 700; }
+.linea .original { font-size: 0.85rem; color: var(--suave); }
+.linea .detalle { font-size: 0.9rem; color: var(--suave); }
+.marca-es { font-size: 0.75rem; font-weight: 700; border: 1px solid var(--borde-campo); border-radius: 4px; padding: 0 0.3rem; margin-inline-start: 0.4rem; vertical-align: middle; color: var(--suave); }
+.marca-doc { font-size: 0.78rem; font-weight: 600; color: var(--acento); margin-inline-start: 0.4rem; }
+
+.aviso-pie { font-size: 0.8rem; color: var(--suave); text-align: center; margin-top: 1.2rem; }
+/* El médico lo quiere todo a la vista: en ancho, lo crítico arriba y el resto en dos columnas. */
+@media (min-width: 1100px) {
+  .panel .bloques-resto { display: grid; grid-template-columns: 1fr 1fr; gap: 0 0.8rem; align-items: start; }
+  .panel .bloques-criticos { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 0.8rem; align-items: start; }
+}
+
+/* ---------- visor del QR ---------- */
+.cabecera-visor { margin: -1rem -1rem 1rem; }
+.cabecera-visor .cabecera-fila { flex-wrap: nowrap; }
+.cabecera-visor h1 { font-size: 1.35rem; margin: 0; }
+.idiomas { display: flex; gap: 0.5rem; align-items: center; font-weight: 600; font-size: 0.85rem; color: var(--cabecera-suave); flex: none; }
+.idiomas select {
+  font: inherit; font-size: 0.95rem; font-weight: 700; min-height: 44px; padding: 0.3rem 0.6rem; border-radius: 12px;
+  border: 0; background: rgba(255, 255, 255, 0.18); color: var(--cabecera-texto);
+}
+.idiomas option { color: #0f2e2b; background: #ffffff; }
+
+.estado { text-align: center; padding: 3rem 1rem; color: var(--suave); }
+.error { background: var(--azul-suave); color: var(--aviso-texto); border-radius: 12px; padding: 0.8rem 1rem; font-weight: 600; }
+
+form.pin { display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
+form.pin input { font: inherit; font-size: 1.4rem; min-height: 48px; letter-spacing: 0.3em; width: 8em; text-align: center; padding: 0.4rem; border-radius: 12px; border: 1px solid var(--borde-campo); background: var(--superficie); color: var(--texto); }
+.boton {
+  font: inherit; font-weight: 700; border: 0; border-radius: 14px; padding: 0.5rem 1.2rem; cursor: pointer; min-height: 48px;
+  background: var(--acento); color: var(--acento-texto); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+}
+.boton:disabled { opacity: 0.55; cursor: default; }
+.boton.secundario { background: var(--superficie); color: var(--acento); border: 2px solid var(--acento); }
+
+/* ---------- filas agrupadas (Bitácora) ---------- */
+.grupo-filas { background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); overflow: hidden; margin-bottom: 0.8rem; }
+.fila {
+  display: flex; align-items: center; gap: 0.8rem; min-height: 60px; padding: 0.55rem 1rem; border-top: 1px solid var(--borde);
+  color: var(--texto); text-decoration: none; width: 100%; font: inherit; background: none; border-left: 0; border-right: 0; border-bottom: 0; text-align: start;
+}
+.fila:first-child { border-top: 0; }
+a.fila:hover, button.fila:hover { background: var(--acento-suave); }
+.fila .icono-fila {
+  flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--acento-suave); color: var(--acento);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.fila .icono-fila svg { width: 22px; height: 22px; }
+.fila .cuerpo { flex: 1; min-width: 0; }
+.fila .cuerpo strong { display: block; font-weight: 650; }
+.fila .cuerpo small { display: block; color: var(--suave); font-size: 0.85rem; }
+.fila .flecha { color: var(--suave); flex: none; }
+
+/* ---------- compartir ---------- */
+.selector { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.selector button {
+  font: inherit; font-weight: 600; padding: 0 1rem; min-height: 44px; border-radius: 999px; border: 1px solid var(--borde);
+  background: var(--superficie); color: var(--texto); cursor: pointer;
+}
+.selector button[aria-pressed='true'] { background: var(--acento); color: var(--acento-texto); border-color: var(--acento); font-weight: 700; }
+.interruptores { list-style: none; margin: 0; padding: 0; }
+.interruptores label {
+  display: flex; gap: 0.8rem; align-items: center; min-height: 56px; cursor: pointer; padding: 0.4rem 0; border-top: 1px solid var(--borde);
+}
+.interruptores li:first-child label { border-top: 0; }
+.interruptores .nombre-seccion { flex: 1; }
+.interruptores .nombre-seccion small { display: block; color: var(--suave); font-size: 0.82rem; }
+/* La casilla, como interruptor (el de iOS), en el color de la marca. Sigue siendo una casilla para el lector. */
+.interruptor {
+  appearance: none; -webkit-appearance: none; flex: none; margin: 0; cursor: pointer;
+  width: 52px; height: 32px; border-radius: 999px; background: var(--borde); position: relative; transition: background 0.15s;
+  border: 1px solid var(--borde-campo);
+}
+.interruptor::after {
+  content: ''; position: absolute; top: 3px; inset-inline-start: 3px; width: 24px; height: 24px; border-radius: 50%;
+  background: #ffffff; box-shadow: 0 1px 3px rgba(15, 46, 43, 0.3); transition: inset-inline-start 0.15s;
+}
+.interruptor:checked { background: var(--acento); border-color: var(--acento); }
+.interruptor:checked::after { inset-inline-start: 23px; }
+.nunca { display: flex; gap: 0.6rem; align-items: flex-start; background: var(--superficie-2); border: 1px solid var(--borde); border-radius: 14px; padding: 0.7rem 0.9rem; color: var(--suave); font-size: 0.88rem; }
+.nunca svg { flex: none; width: 1.1rem; height: 1.1rem; margin-top: 0.15rem; }
+.nunca p { margin: 0; }
+.fuera { color: var(--suave); font-size: 0.9rem; }
+.fuera li { margin: 0.15rem 0; }
+
+/* ---------- tarjeta QR ---------- */
+.qr-grande { display: flex; justify-content: center; }
+.qr-grande svg { width: min(300px, 74vw); height: auto; background: #fff; padding: 12px; border-radius: 12px; }
+.rotulo-emergencia-qr { text-align: center; color: var(--vital); font-weight: 800; letter-spacing: 0.1em; font-size: 0.8rem; margin: 0.8rem 0 0.2rem; }
+.cartera {
+  width: 85.6mm; height: 54mm; border-radius: 3mm; border: 1px solid #c9d8d5; background: #fff; color: #0f2e2b;
+  display: grid; grid-template-columns: 1fr 46mm; gap: 2mm; padding: 3mm; margin: 0 auto; overflow: hidden;
+}
+.cartera .rotulo-emergencia { background: #b42318; color: #fff; font-weight: 800; font-size: 9pt; padding: 1mm 2mm; border-radius: 1.5mm; display: inline-block; }
+.cartera .nombre { font-weight: 800; font-size: 11pt; margin: 2mm 0 1mm; }
+.cartera .pequeno { font-size: 6.5pt; line-height: 1.25; color: #3d5c58; }
+/* El QR lleva el resumen dentro y es denso: a toda la altura, para que los módulos no bajen de ~0,33 mm. */
+.cartera svg { width: 46mm; height: 46mm; align-self: center; }
+.pasos { padding-inline-start: 1.2rem; margin: 0; }
+.pasos li { margin: 0.35rem 0; }
+.centrado { text-align: center; }
+
+@media print {
+  body { background: #fff; color: #0f2e2b; }
+  .no-imprimir, .cabecera-app, .segmentos { display: none !important; }
+  main { padding: 0; }
+  .tarjeta { border: 0; }
+}
+
+/* ---------- consulta del médico de cabecera (escritorio) ---------- */
+main.ancha { max-width: 1280px; }
+.consulta { display: grid; grid-template-columns: 300px 1fr; gap: 1.25rem; align-items: start; }
+@media (max-width: 800px) { .consulta { grid-template-columns: 1fr; } }
+.cupo { background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); padding: 0.6rem; position: sticky; top: 1rem; }
+.medica { font-size: 0.85rem; color: var(--suave); margin: 0.3rem 0.4rem 0.8rem; }
+.medica strong { color: var(--texto); font-size: 1rem; }
+.paciente-fila {
+  display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; width: 100%; text-align: start; min-height: 48px;
+  font: inherit; background: none; border: 0; border-radius: 12px; padding: 0.5rem 0.6rem; cursor: pointer; color: var(--texto);
+}
+.paciente-fila small { display: block; color: var(--suave); font-size: 0.78rem; }
+.paciente-fila:hover { background: var(--fondo); }
+.paciente-fila.activa { background: var(--acento-suave); font-weight: 650; }
+.insignia { background: var(--acento); color: var(--acento-texto); border-radius: 999px; min-width: 1.6rem; text-align: center; font-size: 0.8rem; font-weight: 800; padding: 0.1rem 0.45rem; }
+.insignia.urgente { background: var(--azul); color: var(--superficie); }
+.panel h1 { margin-top: 0; }
+.panel h1::after { content: none; }
+.aviso { background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); padding: 0.9rem 1rem; margin-bottom: 0.7rem; }
+.aviso.urgente { border-inline-start: 5px solid var(--azul); background: linear-gradient(90deg, var(--azul-suave), var(--superficie) 40%); }
+.aviso.gestionado { opacity: 0.7; }
+.aviso header { display: flex; gap: 0.8rem; align-items: baseline; flex-wrap: wrap; }
+.aviso header time { margin-inline-start: auto; color: var(--suave); font-size: 0.85rem; }
+.aviso.urgente header strong { color: var(--azul); }
+.aviso p { margin: 0.35rem 0; }
+.aviso .nota { color: var(--suave); font-style: italic; }
+.tareas { margin: 0.4rem 0; padding-inline-start: 1.2rem; }
+.aviso footer { display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap; }
+.enlace { font: inherit; background: none; border: 0; color: var(--acento); cursor: pointer; padding: 0; text-decoration: underline; font-weight: 600; }
+.subtitulo { font-size: 1.1rem; margin: 1.4rem 0 0.6rem; }
+
+/* ---------- avisar a la familia (visor de emergencia) ---------- */
+.familia { border-color: var(--acento); }
+/* Corto: en un móvil estrecho no debe empujar la anticoagulación fuera de la primera pantalla. */
+.familia-aviso { font-weight: 600; font-size: 0.85rem; line-height: 1.3; color: var(--verde); background: var(--verde-suave); border-radius: 12px; padding: 0.5rem 0.8rem; margin-top: 0; }
+.familia .familia-aviso { background: none; padding: 0; }
+.familia label { display: block; font-size: 0.9rem; color: var(--suave); margin-top: 0.6rem; }
+.familia input, .familia textarea {
+  display: block; width: 100%; margin-top: 0.25rem; font: inherit; padding: 0.5rem 0.7rem; min-height: 44px;
+  border: 1px solid var(--borde-campo); border-radius: 12px; background: var(--fondo); color: var(--texto);
+}
+.familia-botones { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.8rem; }
+
+/* ---------- acceso a la consulta ---------- */
+.acceso { max-width: 460px; margin: 2rem auto; }
+.acceso form { display: flex; flex-direction: column; gap: 0.8rem; }
+.acceso label, .proponer label { display: flex; flex-direction: column; gap: 0.3rem; font-weight: 600; }
+.acceso input, .acceso textarea, .proponer input {
+  font: inherit; font-size: 1rem; min-height: 48px; padding: 0.5rem 0.7rem; border-radius: 12px;
+  border: 1px solid var(--borde-campo); background: var(--superficie); color: var(--texto);
+}
+.acceso code { word-break: break-all; }
+.proponer { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
+/* Lo que no tiene vuelta atrás (eliminar la cuenta) va en azul marino, no en rojo. */
+.boton.peligro { background: var(--azul); color: var(--superficie); border-color: var(--azul); }
+
+/* ---------- controles de casa (módulo de litiasis) ---------- */
+.litiasis { margin-top: 1rem; }
+.litiasis h3 { font-size: 1rem; margin: 1rem 0 0.4rem; }
+.litiasis-avisos { list-style: none; padding: 0; margin: 0.5rem 0; display: grid; gap: 0.35rem; }
+.litiasis-avisos li { padding: 0.5rem 0.75rem; border-radius: 10px; background: var(--acento-suave); }
+.litiasis-avisos li.atencion { background: var(--azul-suave); color: var(--aviso-texto); font-weight: 600; }
+.litiasis-tabla { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+.litiasis-tabla th, .litiasis-tabla td { text-align: start; padding: 0.45rem 0.5rem; border-bottom: 1px solid var(--borde); vertical-align: middle; font-variant-numeric: tabular-nums; }
+.litiasis-tabla tbody td { white-space: nowrap; }
+.litiasis-tabla thead th { color: var(--suave); font-weight: 600; font-size: 0.8rem; }
+.litiasis-tabla th small { display: block; color: var(--suave); font-weight: 400; }
+.litiasis-grafica { width: 180px; height: 40px; display: block; }
+.litiasis-banda { fill: var(--acento-suave); }
+.litiasis-linea { fill: none; stroke: var(--acento); stroke-width: 1.5; }
+.litiasis-punto { fill: var(--acento); }
+.litiasis-adherencia { margin: 0; padding-inline-start: 1.2rem; }
+.litiasis-tendencia { margin-top: 1rem; padding: 0.75rem 1rem; border: 2px dashed var(--borde); border-radius: var(--radio); }
+.litiasis-tendencia h3 { margin-top: 0; }
+@media (max-width: 720px) {
+  .litiasis-tabla { display: block; overflow-x: auto; }
+}
