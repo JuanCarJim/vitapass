@@ -380,3 +380,61 @@ main.ancha { max-width: 1280px; }
 @media (max-width: 720px) {
   .litiasis-tabla { display: block; overflow-x: auto; }
 }
+
+/* ---------- vista del sanitario en el visor (rehecha el 7-11, igual que el móvil) ----------
+   Rojo SOLO para el riesgo vital; teal para lo que se toca, azul para lo destacado no vital,
+   verde para llamar. Sin cajas dentro de cajas: una franja roja, una tarjeta de filas y una rejilla. */
+.u-paciente { display: flex; align-items: flex-end; gap: 0.75rem; margin-top: 0.6rem; }
+.u-nombre { font-size: 1.55rem; font-weight: 800; margin: 0; line-height: 1.15; letter-spacing: -0.01em; color: var(--cabecera-texto); }
+.u-dato { margin: 0.15rem 0 0; font-size: 1rem; color: var(--cabecera-suave); }
+.u-codigo { margin: 0.1rem 0 0; font-size: 0.82rem; letter-spacing: 0.04em; color: var(--cabecera-suave); }
+.u-grupo { background: #ffffff; color: #147569; border-radius: 14px; padding: 0.3rem 0.7rem; text-align: center; min-width: 4.6rem; flex: none; }
+.u-grupo .valor { display: block; font-size: 1.7rem; font-weight: 800; line-height: 1.1; }
+.u-grupo .rotulo { display: block; font-size: 0.68rem; font-weight: 700; }
+.u-rotulo { display: block; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--suave); margin: 0 0 0.1rem; }
+.u-rotulo-fuera { margin: 0 0.25rem 0.5rem; }
+.u-vital { background: var(--vital-suave); border-inline-start: 5px solid var(--vital); border-radius: 14px; padding: 0.75rem 1rem; margin-bottom: 0.75rem; color: var(--vital); }
+.u-vital .u-rotulo { color: var(--vital); }
+.u-vital-linea { display: block; width: 100%; font: inherit; font-size: 1.05rem; line-height: 1.4; color: inherit; background: none; border: 0; padding: 0.15rem 0; text-align: start; }
+.u-vital-linea strong { font-size: 1.12rem; font-weight: 800; }
+.u-resumen { background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); overflow: hidden; margin-bottom: 0.9rem; }
+.u-fila { display: flex; align-items: center; border-top: 1px solid var(--borde); }
+.u-fila:first-child { border-top: 0; }
+.u-fila-boton { flex: 1; min-width: 0; display: flex; align-items: flex-start; gap: 0.75rem; font: inherit; color: var(--texto); background: none; border: 0; padding: 0.6rem 1rem; text-align: start; cursor: pointer; }
+.u-fila-boton:hover { background: var(--acento-suave); }
+.u-fila-cuerpo { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.u-icono { color: var(--acento); display: inline-flex; flex: none; margin-top: 1px; }
+.u-valor { font-size: 1.05rem; line-height: 1.4; }
+.u-una { display: block; }
+.cabecera-visor .marca { display: block; font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.cabecera-visor .idiomas { gap: 0.35rem; }
+.cabecera-visor .idiomas select { max-width: 7.25rem; }
+.u-suave { color: var(--suave); }
+.u-llamar { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 44px; padding: 0 0.9rem; margin-inline-end: 0.8rem; border-radius: 999px; background: var(--verde); color: var(--acento-texto); font-weight: 700; text-decoration: none; flex: none; }
+.u-rejilla { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+.u-casilla { display: flex; flex-direction: column; justify-content: space-between; min-height: 76px; padding: 0.6rem; font: inherit; text-align: start; color: var(--texto); background: var(--superficie); border: 1px solid var(--borde); border-radius: 14px; cursor: pointer; }
+.u-casilla:hover { background: var(--acento-suave); }
+.u-casilla-arriba { display: flex; align-items: center; justify-content: space-between; }
+.u-cuantas { font-size: 0.8rem; font-weight: 800; color: var(--acento); background: var(--acento-suave); border-radius: 999px; padding: 0 0.4rem; min-width: 1.5rem; text-align: center; }
+.u-casilla-texto { font-size: 0.88rem; font-weight: 700; line-height: 1.2; margin-top: 0.4rem; overflow-wrap: normal; hyphens: auto; }
+.u-cuantas.avisa { color: var(--azul); background: var(--azul-suave); }
+.u-pie { font-size: 0.8rem; color: var(--suave); text-align: center; margin: 0.9rem 0 0; }
+.u-hoja { border: 0; padding: 0; width: min(760px, 100%); max-width: 100%; max-height: 92vh; margin: auto auto 0; border-radius: 20px 20px 0 0; background: var(--fondo); color: var(--texto); }
+.u-hoja::backdrop { background: rgba(6, 35, 32, 0.45); }
+@media (min-width: 800px) { .u-hoja { margin: auto; border-radius: 20px; } }
+.u-hoja-dentro { padding: 0 1rem 1.5rem; }
+.u-hoja-cabecera { position: sticky; top: 0; display: flex; align-items: center; gap: 0.7rem; padding: 1rem 0; background: var(--fondo); border-bottom: 1px solid var(--borde); margin-bottom: 0.9rem; }
+.u-hoja-cabecera h2 { flex: 1; margin: 0; font-size: 1.3rem; font-weight: 800; }
+.u-cerrar { width: 44px; height: 44px; border-radius: 22px; border: 0; background: var(--acento-suave); color: var(--acento); font-size: 1.1rem; font-weight: 800; cursor: pointer; }
+.u-lineas { list-style: none; margin: 0; padding: 0; background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); overflow: hidden; }
+.u-lineas li + li { border-top: 1px solid var(--borde); }
+.u-linea { display: flex; flex-direction: column; width: 100%; font: inherit; color: var(--texto); background: none; border: 0; padding: 0.75rem 1rem; text-align: start; }
+.u-linea.con-original { cursor: pointer; }
+.u-linea.vital { background: var(--vital-suave); border-inline-start: 4px solid var(--vital); color: var(--vital); }
+.u-linea.aviso { background: var(--azul-suave); border-inline-start: 4px solid var(--azul); color: var(--azul); }
+.u-linea.secundaria .u-linea-texto { font-weight: 600; color: var(--suave); }
+.u-linea-texto { font-size: 1.1rem; font-weight: 700; }
+.u-linea-detalle { font-size: 1rem; line-height: 1.4; color: var(--suave); margin-top: 0.1rem; }
+.u-linea.vital .u-linea-detalle.grave, .u-linea.aviso .u-linea-detalle.grave { color: inherit; font-weight: 700; }
+.u-informe { font-size: 0.85rem; font-weight: 600; color: var(--acento); margin-top: 0.2rem; }
+.u-original { display: block; font-size: 0.95rem; color: var(--suave); margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px dashed currentColor; font-weight: 500; }
